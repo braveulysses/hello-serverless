@@ -1,0 +1,18 @@
+service: hello-serverless
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          method: post
+          path: hello
+          integration: lambda-proxy

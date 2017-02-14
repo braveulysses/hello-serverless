@@ -1,0 +1,89 @@
+{
+  "name": "hello-serverless",
+  "version": "0.1.0",
+  "description": "A Hello World for the Serverless framework",
+  "main": "index.js",
+  "author": "Jacob Childress <jacobc@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "clean": "rimraf dist/*",
+    "deploy": "serverless deploy -r us-east-1 -s dev",
+    "logs": "serverless logs -f hello -t"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^18.0.0",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "eslint": "^3.15.0",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-flowtype": "^2.30.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jasmine": "^2.2.0",
+    "eslint-plugin-jest": "^1.0.2",
+    "flow-bin": "^0.39.0",
+    "jest": "^18.1.0",
+    "rimraf": "^2.5.4",
+    "serverless-webpack": "^1.0.0-rc.4",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.22.0"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parser": "babel-eslint",
+    "plugins": [
+      "flowtype",
+      "jasmine",
+      "jest"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "env": {
+      "es6": true,
+      "node": true,
+      "jasmine": true
+    },
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": "warn",
+      "flowtype/require-return-type": [
+        2,
+        "always",
+        {
+          "excludeArrowFunctions": true
+        }
+      ]
+    },
+    "settings": {
+      "flowtype": {
+        "onlyFilesWithFlowAnnotation": true
+      }
+    }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "services/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>[/\\\\](dist|docs|node_modules|scripts)[/\\\\]"
+    ],
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.js$"
+    ]
+  }
+}

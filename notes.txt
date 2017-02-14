@@ -1,0 +1,1 @@
+export AWS_PROFILE="serverless-personal" && export AWS_REGION=us-east-1
