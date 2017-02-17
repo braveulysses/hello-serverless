@@ -2,10 +2,14 @@ import EchoService from '../services/EchoService';
 
 describe('The Echo service', () => {
   it('returns a default value', () => {
-    expect(EchoService()).toEqual('Hello, world');
+    expect(EchoService().message).toEqual('Hello, world');
   });
 
   it('echoes its input', () => {
-    expect(EchoService({message: 'hi'})).toEqual('hi');
-  })
+    expect(EchoService({message: 'hi'}).message).toEqual('hi');
+  });
+
+  it('returns a message id', () => {
+    expect(EchoService({message: 'hi'}).messageId).not.toBeNull();
+  });
 });
