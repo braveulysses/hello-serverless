@@ -27,10 +27,6 @@ functions:
           method: get
           path: hellos/{messageId}
           integration: lambda-proxy
-          request:
-            parameters:
-              paths:
-                messageId: true
 
 resources:
   Resources:
