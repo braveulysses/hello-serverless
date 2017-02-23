@@ -47,18 +47,3 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-#    helloTableIamPolicy:
-#      Type: AWS::IAM::Policy
-#      DependsOn: helloTable
-#      Properties:
-#        PolicyName: hello-dynamodb
-#        PolicyDocument:
-#          Version: '2012-10-17'
-#          Statement:
-#            - Effect: Allow
-#              Action:
-#                - dynamodb:GetItem
-#                - dynamodb:PutItem
-#              Resources: arn:aws:dynamodb:*:*:table/helloTable
-#        Roles:
-#          - Ref: IamRoleLambdaExecution
