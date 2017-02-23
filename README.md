@@ -1,6 +1,6 @@
 ## hello-serverless
 
-A 'hello world' project for the [Serverless framework](https://serverless.com/). This exists so that I'll have a simple point of reference for configuring the [serverless-webpack plugin](https://github.com/elastic-coders/serverless-webpack).
+A 'hello world' project for the [Serverless framework](https://serverless.com/). This exists so that I'll have a simple point of reference for configuring the [serverless-webpack plugin](https://github.com/elastic-coders/serverless-webpack) and performing simple read/write operations with [DynamoDB](https://aws.amazon.com/dynamodb/).
 
 Deploy:
 
@@ -30,37 +30,47 @@ api keys:
   None
 endpoints:
   POST - https://something.execute-api.us-east-1.amazonaws.com/dev/hello
+  GET - https://something.execute-api.us-east-1.amazonaws.com/dev/hellos/{messageId}
 functions:
-  hello-serverless-dev-hello
-✨  Done in 29.08s.
+  hello-serverless-dev-addHello
+  hello-serverless-dev-getHellos
+
+Stack Outputs
+GetHellosLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:527771544151:function:hello-serverless-dev-getHellos:2
+AddHelloLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:527771544151:function:hello-serverless-dev-addHello:2
+ServiceEndpoint: https://something.execute-api.us-east-1.amazonaws.com/dev
+ServerlessDeploymentBucketName: hello-serverless-dev-serverlessdeploymentbucket-1g9af3sqp31zj
+
+✨  Done in 62.34s.
 ```
 
-Test:
+Post a message. The service will echo the message back along with a message ID.
 
 ```
-$ http --verbose --json POST https://something.execute-api.us-east-1.amazonaws.com/dev/hello message=Hi
+$ http --verbose --json POST https://something.execute-api.us-east-1.amazonaws.com/dev/hello "message=HI THERE HELLO" 
   POST /dev/hello HTTP/1.1
   Accept: application/json, */*
   Accept-Encoding: gzip, deflate
   Connection: keep-alive
-  Content-Length: 17
+  Content-Length: 29
   Content-Type: application/json
   Host: something.execute-api.us-east-1.amazonaws.com
   User-Agent: HTTPie/0.9.6
   
   {
-      "message": "Hi"
+      "message": "HI THERE HELLO"
   }
   
   HTTP/1.1 200 OK
   Connection: keep-alive
-  Content-Length: 1418
+  Content-Length: 1507
   Content-Type: application/json
-  Date: Tue, 14 Feb 2017 16:06:41 GMT
+  Date: Thu, 23 Feb 2017 14:54:12 GMT
   
   {
+      "dynamoDb": {},
       "input": {
-          "body": "{\"message\": \"Hi\"}",
+          "body": "{\"message\": \"HI THERE HELLO\"}",
           "headers": {
               "Accept": "application/json, */*",
               "Accept-Encoding": "gzip, deflate",
@@ -73,7 +83,7 @@ $ http --verbose --json POST https://something.execute-api.us-east-1.amazonaws.c
               "Content-Type": "application/json",
               "Host": "something.execute-api.us-east-1.amazonaws.com",
               "User-Agent": "HTTPie/0.9.6",
-              "X-Forwarded-For": "192.168.1.1",
+              "X-Forwarded-For": "192.168.1.1, 54.240.149.109",
               "X-Forwarded-Port": "443",
               "X-Forwarded-Proto": "https",
               ...
@@ -84,13 +94,120 @@ $ http --verbose --json POST https://something.execute-api.us-east-1.amazonaws.c
           "pathParameters": null,
           "queryStringParameters": null,
           "requestContext": {
+              "accountId": "527771544151",
+              "apiId": "something",
+              "httpMethod": "POST",
+              "identity": {
+                  "accessKey": null,
+                  "accountId": null,
+                  "apiKey": null,
+                  "caller": null,
+                  "cognitoAuthenticationProvider": null,
+                  "cognitoAuthenticationType": null,
+                  "cognitoIdentityId": null,
+                  "cognitoIdentityPoolId": null,
+                  "sourceIp": "192.168.1.1",
+                  "user": null,
+                  "userAgent": "HTTPie/0.9.6",
+                  "userArn": null
+              },
+              "requestId": "efa6f5eb-f9d7-11e6-909b-d529e6ccf443",
+              "resourceId": "zq3bi0",
               "resourcePath": "/hello",
-              "stage": "dev",
-              ...
+              "stage": "dev"
           },
           "resource": "/hello",
           "stageVariables": null
       },
-      "message": "Hi"
+      "message": "HI THERE HELLO",
+      "messageId": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
   }
+```
+
+Retrieve the message.
+
+```
+$ http --verbose --json GET https://something.execute-api.us-east-1.amazonaws.com/dev/hellos/efe165f0-f9d7-11e6-bed7-8b35c850babe
+GET /dev/hellos/efe165f0-f9d7-11e6-bed7-8b35c850babe HTTP/1.1
+Accept: application/json, */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Type: application/json
+Host: something.execute-api.us-east-1.amazonaws.com
+User-Agent: HTTPie/0.9.6
+
+
+
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 1683
+Content-Type: application/json
+Date: Thu, 23 Feb 2017 14:55:44 GMT
+
+{
+    "dynamoDb": {
+        "Item": {
+            "message": {
+                "S": "HI THERE HELLO"
+            },
+            "messageId": {
+                "S": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
+            }
+        }
+    },
+    "input": {
+        "body": null,
+        "headers": {
+            "Accept": "application/json, */*",
+            "Accept-Encoding": "gzip, deflate",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "US",
+            "Content-Type": "application/json",
+            "Host": "something.execute-api.us-east-1.amazonaws.com",
+            "User-Agent": "HTTPie/0.9.6",
+            "X-Forwarded-For": "192.168.1.1, 54.240.149.63",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https",
+            ...
+        },
+        "httpMethod": "GET",
+        "isBase64Encoded": false,
+        "path": "/hellos/efe165f0-f9d7-11e6-bed7-8b35c850babe",
+        "pathParameters": {
+            "messageId": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
+        },
+        "queryStringParameters": null,
+        "requestContext": {
+            "accountId": "527771544151",
+            "apiId": "something",
+            "httpMethod": "GET",
+            "identity": {
+                "accessKey": null,
+                "accountId": null,
+                "apiKey": null,
+                "caller": null,
+                "cognitoAuthenticationProvider": null,
+                "cognitoAuthenticationType": null,
+                "cognitoIdentityId": null,
+                "cognitoIdentityPoolId": null,
+                "sourceIp": "192.168.1.1",
+                "user": null,
+                "userAgent": "HTTPie/0.9.6",
+                "userArn": null
+            },
+            "requestId": "272273ac-f9d8-11e6-b08a-a7d140099333",
+            "resourceId": "s17l9x",
+            "resourcePath": "/hellos/{messageId}",
+            "stage": "dev"
+        },
+        "resource": "/hellos/{messageId}",
+        "stageVariables": null
+    },
+    "message": "HI THERE HELLO",
+    "messageId": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
+}
 ```
