@@ -14,7 +14,7 @@ This project also uses [ESLint](http://eslint.org/) and [Flow](https://flowtype.
 
 #### Deploy
 
-Deploy with `yarn run deploy`:
+Deploy with `yarn deploy`:
 
 ```
 $ serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET --profile serverless-hello
@@ -58,11 +58,17 @@ ServerlessDeploymentBucketName: hello-serverless-dev-serverlessdeploymentbucket-
 
 #### Logs
 
-View Lambda logs with `yarn run logs-add` and `yarn run logs-get`.
+View Lambda logs with `yarn logs-add` and `yarn logs-get`.
 
 #### Code quality
 
-Run code quality checks with `yarn run flow` and `yarn run eslint src`. Run tests with `yarn test`.
+Run code quality checks with `yarn run flow` and `yarn run eslint src`. These checks will also be run during deployment. 
+
+Run tests with `yarn test`.
+
+#### Troubleshooting
+
+It may be helpful to look at the generated Webpack bundle. Do this by running `yarn webpack` and looking in the `.webpack` directory. This command will also run Flow and ESLint.
 
 ### Usage
 
