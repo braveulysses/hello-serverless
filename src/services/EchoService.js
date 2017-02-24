@@ -2,7 +2,7 @@
 import uuidV4 from 'uuid/v1';
 
 type Message = {
-  message: string
+  message?: string
 };
 
 type Result = {

@@ -9,7 +9,7 @@ module.exports = {
         test: /\.js$/,
         loaders: ['babel'],
         include: __dirname,
-        exclude: [/node_modules/, /tests/]
+        exclude: [/node_modules/, /src\/tests/]
       },
       {
         test: /\.json$/,
