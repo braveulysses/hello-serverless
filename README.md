@@ -1,8 +1,20 @@
 ## hello-serverless
 
-A 'hello world' project for the [Serverless framework](https://serverless.com/). This exists so that I'll have a simple point of reference for configuring the [serverless-webpack plugin](https://github.com/elastic-coders/serverless-webpack) and performing simple read/write operations with [DynamoDB](https://aws.amazon.com/dynamodb/).
+A 'hello world' project for the [Serverless framework](https://serverless.com/). 
 
-Deploy:
+This exists because I need a simple point of reference for:
+
+* Writing Amazon Lambda functions in ES6 (using the [serverless-webpack plugin](https://github.com/elastic-coders/serverless-webpack)).
+* Performing simple read/write operations with [DynamoDB](https://aws.amazon.com/dynamodb/).
+* Unit testing request handler code.
+
+This project also uses [ESLint](http://eslint.org/) and [Flow](https://flowtype.org/). There's probably more to be done with them.
+
+### Commands
+
+#### Deploy
+
+Deploy with `yarn run deploy`:
 
 ```
 $ serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET --profile serverless-hello
@@ -44,6 +56,18 @@ ServerlessDeploymentBucketName: hello-serverless-dev-serverlessdeploymentbucket-
 ✨  Done in 62.34s.
 ```
 
+#### Logs
+
+View Lambda logs with `yarn run logs-add` and `yarn run logs-get`.
+
+#### Code quality
+
+Run code quality checks with `yarn run flow` and `yarn run eslint src`. Run tests with `yarn test`.
+
+### Usage
+
+#### Add
+
 Post a message. The service will echo the message back along with a message ID.
 
 ```
@@ -68,8 +92,7 @@ $ http --verbose --json POST https://something.execute-api.us-east-1.amazonaws.c
   Date: Thu, 23 Feb 2017 14:54:12 GMT
   
   {
-      "dynamoDb": {},
-      "input": {
+      "event": {
           "body": "{\"message\": \"HI THERE HELLO\"}",
           "headers": {
               "Accept": "application/json, */*",
@@ -119,10 +142,15 @@ $ http --verbose --json POST https://something.execute-api.us-east-1.amazonaws.c
           "resource": "/hello",
           "stageVariables": null
       },
+      "context": {
+               ...
+      },
       "message": "HI THERE HELLO",
       "messageId": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
   }
 ```
+
+#### Retrieve
 
 Retrieve the message.
 
@@ -145,17 +173,7 @@ Content-Type: application/json
 Date: Thu, 23 Feb 2017 14:55:44 GMT
 
 {
-    "dynamoDb": {
-        "Item": {
-            "message": {
-                "S": "HI THERE HELLO"
-            },
-            "messageId": {
-                "S": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
-            }
-        }
-    },
-    "input": {
+    "event": {
         "body": null,
         "headers": {
             "Accept": "application/json, */*",
@@ -206,6 +224,9 @@ Date: Thu, 23 Feb 2017 14:55:44 GMT
         },
         "resource": "/hellos/{messageId}",
         "stageVariables": null
+    },
+    "context": {
+         ...
     },
     "message": "HI THERE HELLO",
     "messageId": "efe165f0-f9d7-11e6-bed7-8b35c850babe"
