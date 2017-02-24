@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "deploy": "serverless deploy -r us-east-1 -s dev --verbose",
+    "deploy": "serverless deploy -r us-east-1 -s dev",
     "logs-get": "serverless logs -f getHellos -t",
     "logs-add": "serverless logs -f addHello -t"
   },
@@ -53,7 +53,7 @@
     "env": {
       "es6": true,
       "node": true,
-      "jasmine": true
+      "jest": true
     },
     "rules": {
       "no-console": "off",
@@ -62,7 +62,8 @@
         2,
         "always",
         {
-          "excludeArrowFunctions": true
+          "excludeArrowFunctions": true,
+          "annotateUndefined": "always"
         }
       ]
     },
