@@ -6,13 +6,40 @@ plugins:
 provider:
   name: aws
   runtime: nodejs4.3
-  stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource: arn:aws:dynamodb:*:*:table/helloTable
 
 functions:
-  hello:
+  addHello:
     handler: handler.hello
     events:
       - http:
           method: post
           path: hello
           integration: lambda-proxy
+  getHellos:
+    handler: handler.hellos
+    events:
+      - http:
+          method: get
+          path: hellos/{messageId}
+          integration: lambda-proxy
+
+resources:
+  Resources:
+    helloTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: helloTable
+        AttributeDefinitions:
+          - AttributeName: messageId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: messageId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

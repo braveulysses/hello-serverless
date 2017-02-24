@@ -1,33 +1,16 @@
 // @flow
-import EchoService from './services/EchoService';
+import addMessage from './src/handlers/AddHandler';
+import getMessages from './src/handlers/RetrieveHandler';
+import AWS from 'aws-sdk';
 
 const hello = (event: Object, context: Object, callback: Function): void => {
-  const response: Object = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-
-  try {
-    const body = JSON.parse(event.body);
-    const result = EchoService({
-      message: body.message
-    });
-    response.statusCode = 200;
-    response.body = JSON.stringify({
-      message: result,
-      input: event
-    });
-  } catch (e) {
-    response.statusCode = 400;
-    response.body = JSON.stringify({
-      message: 'Error',
-      error: e,
-      input: event
-    });
-  }
-
-  callback(null, response);
+  const docClient = new AWS.DynamoDB.DocumentClient();
+  addMessage(docClient, event, context, callback);
 };
 
-export { hello };
+const hellos = (event: Object, context: Object, callback: Function): void => {
+  const docClient = new AWS.DynamoDB.DocumentClient();
+  getMessages(docClient, event, context, callback);
+};
+
+export { hello, hellos };
