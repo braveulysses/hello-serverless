@@ -51,22 +51,6 @@ class MockDb {
       }
     });
     return new WrappedPromise(promise);
-
-
-    // const message = this._db.get(params.Key.messageId);
-    // const item = {
-    //   messageId: params.Key.messageId,
-    //   message: message
-    // };
-    // if (this.getError()) {
-    //   callback(this.getError(), null);
-    // } else if (!message) {
-    //   callback(null, {});
-    // } else {
-    //   callback(null, {
-    //     Item: item
-    //   });
-    // }
   }
 
   put(params: Object = {}): WrappedPromise {
@@ -79,12 +63,6 @@ class MockDb {
       }
     });
     return new WrappedPromise(promise);
-
-    // if (this.getError()) {
-    //   callback(this.getError(), null);
-    // } else {
-    //   callback(null, {});
-    // }
   }
 }
 
