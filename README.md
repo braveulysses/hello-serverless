@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/braveulysses/hello-serverless.svg?branch=master)](https://travis-ci.org/braveulysses/hello-serverless)
 ## hello-serverless
 
 A 'hello world' project for the [Serverless framework](https://serverless.com/). 
