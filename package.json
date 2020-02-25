@@ -29,7 +29,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
     "eslint-plugin-jest": "^1.0.2",
-    "flow-bin": "^0.39.0",
+    "flow-bin": "^0.119.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "jest": "^18.1.0",
     "serverless-webpack": "^1.0.0-rc.4",
